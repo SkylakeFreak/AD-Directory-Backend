@@ -12,18 +12,17 @@ const createUser=async(req,res)=>{
     }
 };
 
-const referealentry=(req,res)=>{
-    try{
-        const safetystring=req.query.safetystring;
+const referealentry=(req, res) => {
+    const {safetystring,orgName,deviceid,isFingerprintAuthenticated} = req.query; // Capture query parameter
 
-        console.log(safetystring);
-        res.status(200).json({ message: "Authentication status updated successfully", data: updatedText });
-    }
-    catch(err){
-        console.log(err);
-        res.status(400)
+    if (!safetystring) {
+        return res.status(400).json({ error: "safetystring parameter is missing" });
     }
 
-}
+    res.status(200).json({ message: "Received safetystring", safetystring,orgName,deviceid,isFingerprintAuthenticated });
+};
+
+
+
 
 module.exports={createUser,referealentry};

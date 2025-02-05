@@ -2,14 +2,14 @@
     "version": 2,
     "builds": [
       {
-        "src": "Entrypoint.js", 
+        "src": "index.js", 
         "use": "@vercel/node"
       }
     ],
     "routes": [
       {
         "src": "/(.*)",
-        "dest": "Entrypoint.js"
+        "dest": "index.js"
       }
     ]
   }

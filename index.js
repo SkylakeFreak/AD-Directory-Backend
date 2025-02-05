@@ -5,7 +5,7 @@ const cors=require('cors');
 const connectDB = require("./Config/databaseconnection");
 
 dotenv.config();
-connectDB();
+// connectDB();
 
 const app=express();
 console.log("server is running")

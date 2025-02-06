@@ -1,11 +1,10 @@
 const express=require("express");
-const conenctDB=require("./Config/databaseconnection");
 const dotenv=require('dotenv');
 const cors=require('cors');
 const connectDB = require("./Config/databaseconnection");
-
+const bodyParser = require("body-parser")
 dotenv.config();
-// connectDB();
+connectDB();
 
 const app=express();
 console.log("server is running")
@@ -16,6 +15,7 @@ app.use(cors({
     allowedHeaders: ["Content-Type"],
   }));
 app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/",require("./Routes/userRoutes"));
 const PORT=5000;

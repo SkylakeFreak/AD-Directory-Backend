@@ -1,10 +1,12 @@
-const mongoose=require("mongoose");
-const organizationSchema=new mongoose.Schema({
-    organizationname:{type:String,required:true},
-    adminusername:{type:String,require:true,unique:true},
-    devicebiometricidentity:{type:String,require:true},
+const mongoose = require("mongoose");
 
+const userSchema = new mongoose.Schema({
+    orgName: { type: String, required: true },
+    adminname: { type: String, required: true, unique: true },
+    safetystring: { type: String, required: true },
+    isFingerprintauthenticated: { type: String, required: true },
+    currentsession:{type:Boolean,default:false}
+});
 
-})
-
-module.exports=mongoose.model("User",organizationSchema);
+const User = mongoose.model("User", userSchema);
+module.exports = User;

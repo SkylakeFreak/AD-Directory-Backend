@@ -54,6 +54,12 @@
     };  
 
 
+    const tokenfetch=async(req,res)=>{
+        
+
+    }
+
+
 
 
     module.exports={referealentry,verifyuser};

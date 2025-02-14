@@ -101,7 +101,7 @@
                     return res.status(403).json({ error: "Invalid or expired token." });
                 }
     
-                return res.status(200).json({ message: "User Authenticated: " + decoded.username+decoded.orgname });
+                return res.status(200).json({ message: "User Authenticated: " ,name:decoded.username,org:decoded.orgname });
             });
     
         } catch (error) {

@@ -73,10 +73,11 @@
             if (token){
                 jwt.verify(token, SECRET_KEY, (err, decoded) => {
                     if (err) {
-                        return res.status(403).json({ error: "Invalid or expired token." });
+                        return res.status(403).json({ error: "Invalid or expired token.",isauthenticated:false });
                     }
+                    
         
-                    return res.status(200).json({ message: "Already exists: " ,name:decoded.username,org:decoded.orgname });
+                    return res.status(200).json({ message: "Already exists: " ,name:decoded.username,org:decoded.orgname,isauthenticated:true,ttl:decoded.iat,exp:decoded.exp });
                 });
                 
 

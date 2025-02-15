@@ -70,6 +70,18 @@
         console.log("Its frontend fetch logic",connectionstring)
     
         try {
+            if (token){
+                jwt.verify(token, SECRET_KEY, (err, decoded) => {
+                    if (err) {
+                        return res.status(403).json({ error: "Invalid or expired token." });
+                    }
+        
+                    return res.status(200).json({ message: "Already exists: " ,name:decoded.username,org:decoded.orgname });
+                });
+                
+
+            }
+            else{
             const findUser = await User.findOne({
                 orgName: orgname,
                 adminname: username,
@@ -103,6 +115,7 @@
     
                 return res.status(200).json({ message: "User Authenticated: " ,name:decoded.username,org:decoded.orgname });
             });
+        }
     
         } catch (error) {
             return res.status(500).json({ error: "Error in authentication logic" });

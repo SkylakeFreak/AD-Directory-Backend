@@ -105,7 +105,7 @@
     const frontendfetchlogic = async (req, res) => {
         let token = req.cookies.authToken;
         const { orgname, username,connectionstring } = req.body;
-        console.log("Its frontend fetch logic",connectionstring)
+        console.log("Its frontend fetch logic",orgname,username,connectionstring)
     
         try {
             if (token){

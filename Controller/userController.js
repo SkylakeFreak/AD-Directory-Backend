@@ -1,23 +1,61 @@
     const User=require("../Model/userModel")
-    const SECRET_KEY = "234H2345**@#922231211@FEBF"
+    
     const jwt = require('jsonwebtoken');
 
     const referealentry=async(req, res) => {
-        const {safetystring,orgName,deviceid,isFingerprintauthenticated,adminname} = req.query; 
+        const {safetystring,orgName,deviceid,isFingerprintauthenticated,adminname,socketiocode} = req.query; 
+        console.log("check status of get",socketiocode,orgName);
     
 
         if (!safetystring) {
             return res.status(400).json({ error: "safetystring parameter is missing" });
         }
-        console.log(safetystring,orgName,deviceid,isFingerprintauthenticated);      
+        console.log(safetystring,orgName,deviceid,isFingerprintauthenticated);    
+        const temp="test"  
         const newUser=new User({orgName,adminname,safetystring,isFingerprintauthenticated});
         await newUser.save();
+        await User.findOneAndUpdate(
+            { 
+                safetystring: safetystring, 
+                orgName: orgName, 
+                adminname: adminname, 
+            }, 
+            { 
+                $set: { 
+                    onetimeloginstring:socketiocode
+                } 
+            },
+        );
 
         res.status(200).json({ message: "Received safetystring..", safetystring,orgName,deviceid,isFingerprintauthenticated,adminname });   
         
         
-    };  
+    }; 
 
+    const frontendlogs = async (req, res) => {
+        try {
+            const {domainname1,tenantname,connectionstring} = req.body; // Assuming it's in request body
+            console.log(domainname1,tenantname,connectionstring)
+    
+            // Find the user
+            const findUser = await User.findOne({
+                orgName: tenantname,
+                adminname: domainname1,
+                onetimeloginstring:connectionstring,
+            });
+    
+            if (findUser) {
+                return res.status(200).json({ message: "signedup in Sucessfully!"      });
+            } else {
+                return res.status(400).json({ message: "User not found or not signed up yet." });
+            }
+    
+        } catch (err) {
+            console.error(err);
+            return res.status(500).json({ message: "Some error occurred" });
+        }
+    };
+    
     
     const verifyuser=async(req, res) => {
         const {safetystring,orgName,deviceid,isFingerprintauthenticated,adminname,socketiocode} = req.query; 
@@ -71,7 +109,7 @@
     
         try {
             if (token){
-                jwt.verify(token, SECRET_KEY, (err, decoded) => {
+                jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
                     if (err) {
                         return res.status(403).json({ error: "Invalid or expired token.",isauthenticated:false });
                     }
@@ -96,20 +134,20 @@
     
             if (!token) {
                 const payload = { username: username, orgname:orgname,socketiocode:connectionstring };
-                token = jwt.sign(payload, SECRET_KEY, { expiresIn: '2m' });
+                token = jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: '30m' })
     
 
                 res.cookie("authToken", token, {
                     httpOnly: true,
                     secure: process.env.NODE_ENV === "production",  
                     sameSite: "None",  
-                    maxAge: 2 * 60 * 1000,
+                    maxAge: 30 * 60 * 1000,
                 });
     
                 return res.status(201).json({ message: "New token created" });
             }
     
-            jwt.verify(token, SECRET_KEY, (err, decoded) => {
+            jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
                 if (err) {
                     return res.status(403).json({ error: "Invalid or expired token." });
                 }
@@ -125,4 +163,4 @@
      
 
 
-    module.exports={referealentry,verifyuser,frontendfetchlogic};
+    module.exports={referealentry,verifyuser,frontendfetchlogic,frontendlogs};

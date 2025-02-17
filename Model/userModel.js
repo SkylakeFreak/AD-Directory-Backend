@@ -6,7 +6,8 @@ const userSchema = new mongoose.Schema({
     adminname: { type: String, required: true },
     safetystring: { type: String, required: true },
     isFingerprintauthenticated: { type: String, required: true },
-    socketiocode:{type:String,default:"Not Scanned the Signup!"},
+    socketiocode:{type:String,default:"Not Scanned the Signed IN!"},
+    onetimeloginstring:{type:String,default:"Error"},
     currentsession: { type: Boolean, default: false },
     sessionExpiresAt: { type: Date },  // No default here
 });

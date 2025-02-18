@@ -12,8 +12,20 @@
         }
         console.log(safetystring,orgName,deviceid,isFingerprintauthenticated);    
         const temp="test"  
+
+        const finduser = await User.findOne({
+            orgName:orgName,
+            adminname:adminname
+        })
+        if (finduser){
+            console.log("user already exists via android app");
+            return res.status(400).json({ message: "User Already Exists"}); 
+
+        }
+        console.log("created new via android app")
         const newUser=new User({orgName,adminname,safetystring,isFingerprintauthenticated});
         await newUser.save();
+
         await User.findOneAndUpdate(
             { 
                 safetystring: safetystring, 
@@ -43,12 +55,25 @@
                 adminname: domainname1,
                 onetimeloginstring:connectionstring,
             });
-    
+            const findUser1 = await User.findOne({
+                orgName: tenantname,
+                adminname: domainname1,
+            });
+
             if (findUser) {
-                return res.status(200).json({ message: "signedup in Sucessfully!"      });
-            } else {
-                return res.status(400).json({ message: "User not found or not signed up yet." });
+                return res.status(200).json({ message: "Logged IN Successfully"      });
+            } 
+            
+            else {
+
+                if (findUser1){
+                    console.log("User exists but different conenction string that means User exists Already")
+                    return res.status(400).json({ message: "User exists but different conenction string that means User exists Already" });
+
+                }
+                return res.status(400).json({ message: "Purely User Not Found" });
             }
+
     
         } catch (err) {
             console.error(err);

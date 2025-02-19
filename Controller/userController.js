@@ -44,6 +44,7 @@
         
     }; 
 
+
     const frontendlogs = async (req, res) => {
         try {
             const {domainname1,tenantname,connectionstring} = req.body; // Assuming it's in request body
@@ -80,6 +81,57 @@
             return res.status(500).json({ message: "Some error occurred" });
         }
     };
+
+
+    const logouttheuserandroid=async(req, res) => {
+        const {safetystring,orgName,deviceid,isFingerprintauthenticated,adminname,socketiocode} = req.query; 
+        
+        if (!safetystring) {
+            return res.status(400).json({ error: "safetystring parameter is missing" });
+        }
+        console.log(safetystring,orgName,deviceid,isFingerprintauthenticated);  
+        try {
+            const updatedUser = await User.findOneAndUpdate(
+                { 
+                    safetystring: safetystring, 
+                    orgName: orgName, 
+                    adminname: adminname, 
+                }, 
+                { 
+                    $set: { 
+                        currentsession: false, 
+                    } 
+                },
+                { new: true } // Return the updated document
+            );
+
+
+        
+    
+            if (!updatedUser) {
+                return res.status(404).json({ error: "User not found or logout failed" });
+            }
+
+            res.status(200).json({ message: "Logout the User Successfuly" });
+        } catch (error) {
+            res.status(500).json({ error: "Error while logging out the user" });
+        }
+
+        
+
+        res.status(200).json({ message: "Received safetystring..", safetystring,orgName,deviceid,isFingerprintauthenticated,adminname });
+        
+        
+    };  
+
+
+
+
+
+
+
+
+
     
     
     const verifyuser=async(req, res) => {
@@ -188,4 +240,4 @@
      
 
 
-    module.exports={referealentry,verifyuser,frontendfetchlogic,frontendlogs};
+    module.exports={referealentry,verifyuser,frontendfetchlogic,frontendlogs,logouttheuserandroid};

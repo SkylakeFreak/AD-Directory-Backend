@@ -83,13 +83,60 @@
     };
 
 
+    const verifyuserstatusredgreen=async(req,res)=>{
+        let token = req.cookies.authToken;
+
+        try {
+            if (token){
+                jwt.verify(token, process.env.SECRET_KEY, async (err, decoded) => {
+                    if (err) {
+                        return res.status(403).json({ error: "Invalid or expired token for the red green status."});
+                    }
+                    const findUser = await User.findOne({
+                        orgName: decoded.orgname,
+                        adminname: decoded.username,
+                        currentsession: true,
+                    });
+                    if (findUser){
+                        return res.status(200).json({message:true})
+                    }
+                    return res.status(400).json({ message: false});
+                });
+            }
+        }
+        catch(err){
+            return res.status(403).json({error:"some error occured"})
+
+        }
+
+
+    }
+
+
+    const cookieclear = (req, res) => {
+        if (!req.cookies.authToken) {
+            return res.status(400).json({ message: "No cookie found" });
+        }
+    
+        res.cookie("authToken", "", {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "None",
+            expires: new Date(0), // Expired date
+        });
+        res.send("Cookie expired");
+        res.status(200).json({ message: "Cookie cleared successfully" });
+    };
+
+
     const logouttheuserandroid=async(req, res) => {
         const {safetystring,orgName,deviceid,isFingerprintauthenticated,adminname,socketiocode} = req.query; 
         
         if (!safetystring) {
+            console.log("Safety string is missing logout")
             return res.status(400).json({ error: "safetystring parameter is missing" });
         }
-        console.log(safetystring,orgName,deviceid,isFingerprintauthenticated);  
+        console.log(safetystring,orgName,adminname);  
         try {
             const updatedUser = await User.findOneAndUpdate(
                 { 
@@ -104,9 +151,7 @@
                 },
                 { new: true } // Return the updated document
             );
-
-
-        
+            
     
             if (!updatedUser) {
                 return res.status(404).json({ error: "User not found or logout failed" });
@@ -240,4 +285,4 @@
      
 
 
-    module.exports={referealentry,verifyuser,frontendfetchlogic,frontendlogs,logouttheuserandroid};
+    module.exports={referealentry,verifyuser,frontendfetchlogic,frontendlogs,logouttheuserandroid,cookieclear,verifyuserstatusredgreen};

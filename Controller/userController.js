@@ -124,8 +124,7 @@
             sameSite: "None",
             expires: new Date(0), // Expired date
         });
-        res.send("Cookie expired");
-        res.status(200).json({ message: "Cookie cleared successfully" });
+        res.status(200).json({ message: true });
     };
 
 

@@ -122,7 +122,7 @@
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             sameSite: "None",
-            expires: new Date(0), // Expired date
+            expires: new Date(0), 
         });
         res.status(200).json({ message: true });
     };

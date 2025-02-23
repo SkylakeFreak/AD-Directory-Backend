@@ -4,6 +4,7 @@ const cron = require('node-cron');
 const userSchema = new mongoose.Schema({
     orgName: { type: String, required: true },
     adminname: { type: String, required: true },
+    category:{tye:String,required:true},//Super-Admin, Organization-Admin, Manager, User
     safetystring: { type: String, required: true },
     isFingerprintauthenticated: { type: String, required: true },
     socketiocode:{type:String,default:"Not Scanned the Signed IN!"},

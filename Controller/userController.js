@@ -3,7 +3,7 @@
     const jwt = require('jsonwebtoken');
 
     const referealentry=async(req, res) => {
-        const {safetystring,orgName,deviceid,isFingerprintauthenticated,adminname,socketiocode} = req.query; 
+        const {safetystring,orgName,deviceid,isFingerprintauthenticated,adminname,socketiocode,modeoflogin} = req.query; 
         console.log("check status of get",socketiocode,orgName);
     
 
@@ -34,7 +34,8 @@
             }, 
             { 
                 $set: { 
-                    onetimeloginstring:socketiocode
+                    onetimeloginstring:socketiocode,
+                    category:modeoflogin
                 } 
             },
         );

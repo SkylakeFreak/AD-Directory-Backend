@@ -11,7 +11,7 @@
             return res.status(400).json({ error: "safetystring parameter is missing" });
         }
         console.log(safetystring,orgName,deviceid,isFingerprintauthenticated);    
-        const temp="test"  
+
 
         const finduser = await User.findOne({
             orgName:orgName,

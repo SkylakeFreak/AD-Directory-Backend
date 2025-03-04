@@ -4,7 +4,7 @@
 
     const referealentry=async(req, res) => {
         const {safetystring,orgName,deviceid,isFingerprintauthenticated,adminname,socketiocode,modeoflogin} = req.query; 
-        console.log("check status of get",socketiocode,orgName);
+        console.log("here it is modeoflofin comment: ",modeoflogin);
     
 
         if (!safetystring) {
@@ -180,7 +180,7 @@
     
     
     const verifyuser=async(req, res) => {
-        const {safetystring,orgName,deviceid,isFingerprintauthenticated,adminname,socketiocode} = req.query; 
+        const {safetystring,orgName,deviceid,isFingerprintauthenticated,adminname,socketiocode,modeoflogin} = req.query; 
         
         if (!safetystring) {
             return res.status(400).json({ error: "safetystring parameter is missing" });
@@ -193,6 +193,7 @@
                     orgName: orgName, 
                     adminname: adminname, 
                     isFingerprintauthenticated: isFingerprintauthenticated,
+                    category:modeoflogin
                 }, 
                 { 
                     $set: { 

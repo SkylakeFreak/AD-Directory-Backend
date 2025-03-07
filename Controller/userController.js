@@ -227,21 +227,20 @@
 
     const frontendfetchlogic = async (req, res) => {
         let token = req.cookies.authToken;
-        const { orgname, username,connectionstring } = req.body;
-        console.log("Its frontend fetch logic",orgname,username,connectionstring)
+        const { orgname, username,connectionstring,modeoflogin } = req.body;
+        console.log("Its frontend fetch logic")
     
         try {
             if (token){
                 jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
+                    console.log(decoded.modeoflogin)
                     if (err) {
                         return res.status(403).json({ error: "Invalid or expired token.",isauthenticated:false });
                     }
                     
         
-                    return res.status(200).json({ message: "Already exists: " ,name:decoded.username,org:decoded.orgname,isauthenticated:true,ttl:decoded.iat,exp:decoded.exp });
+                    return res.status(200).json({ message: "Already exists: " ,name:decoded.username,org:decoded.orgname,isauthenticated:true,ttl:decoded.iat,exp:decoded.exp,modeoflogin:decoded.modeoflogin });
                 });
-                
-
             }
             else{
             const findUser = await User.findOne({
@@ -256,10 +255,8 @@
             }
     
             if (!token) {
-                const payload = { username: username, orgname:orgname,socketiocode:connectionstring };
+                const payload = { username: username, orgname:orgname,socketiocode:connectionstring,modeoflogin:findUser.category};//change here code optimizable
                 token = jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: '30m' })
-    
-
                 res.cookie("authToken", token, {
                     httpOnly: true,
                     secure: process.env.NODE_ENV === "production",  
@@ -272,10 +269,10 @@
     
             jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
                 if (err) {
-                    return res.status(403).json({ error: "Invalid or expired token." });
+                    return res.status(403).json({ error: "Invalid or expired token."});
                 }
     
-                return res.status(200).json({ message: "User Authenticated: " ,name:decoded.username,org:decoded.orgname });
+                return res.status(200).json({ message: "User Authenticated: " ,name:decoded.username,org:decoded.orgname,modeoflogin:decoded.modeoflogin });
             });
         }
     

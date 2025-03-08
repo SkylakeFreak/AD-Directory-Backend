@@ -280,7 +280,33 @@
             return res.status(500).json({ error: "Error in authentication logic" });
         }
     };
+
+
+
+
+
+    const lowleveluserenrollments=async(req, res) => {
+        const {nameofemployee,personalemailid,phonenumber,gender,designation,department,date,orgName,safetystring,adminname,category } = req.body; 
+
+
+        const finduser = await User.findOne({
+            orgName:orgName,
+            adminname:adminname,
+            nameofemployee:nameofemployee
+        })
+        if (finduser){
+            console.log("user already exists");
+            return res.status(400).json({ message: "User Already Exists"}); 
+
+        }
+        console.log("created new user")
+        const newUser=new User({nameofemployee,phonenumber,personalemailid,gender,designation,department,category,date,orgName,adminname});
+        await newUser.save();
+        res.status(200).json({ message: "Received safetystring.." });   
+        
+        
+    }; 
      
 
 
-    module.exports={referealentry,verifyuser,frontendfetchlogic,frontendlogs,logouttheuserandroid,cookieclear,verifyuserstatusredgreen};
+    module.exports={referealentry,verifyuser,frontendfetchlogic,frontendlogs,logouttheuserandroid,cookieclear,verifyuserstatusredgreen,lowleveluserenrollments};

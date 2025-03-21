@@ -286,7 +286,8 @@
 
 
     const lowleveluserenrollments=async(req, res) => {
-        const {nameofemployee,personalemailid,phonenumber,gender,designation,department,date,orgName,safetystring,adminname,category } = req.body; 
+        const {nameofemployee,personalemailid,phonenumber,gender,designation,
+            date,orgName,safetystring,adminname,category,usertier,selectedDepartment,selectedRole } = req.body; 
 
 
         const finduser = await User.findOne({
@@ -300,9 +301,9 @@
 
         }
         console.log("created new user")
-        const newUser=new User({nameofemployee,phonenumber,personalemailid,gender,designation,department,category,date,orgName,adminname});
+        const newUser=new User({nameofemployee,phonenumber,personalemailid,gender,designation,category,date,orgName,adminname,usertier,selectedDepartment,selectedRole});
         await newUser.save();
-        res.status(200).json({ message: "Received safetystring.." });   
+        res.status(200).json({ message: "Low Level Data Saved Successfully" });   
         
         
     }; 

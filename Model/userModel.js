@@ -17,7 +17,9 @@ const userSchema = new mongoose.Schema({
     gender:{type:String},
     date:{type:String},
     designation:{type:String},
-    department:{type:String},
+    usertier:{type:String},
+    selectedDepartment:{type:String},
+    selectedRole:{type:String},
 });
 
 // Remove TTL index (if you had added it earlier)

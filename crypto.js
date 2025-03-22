@@ -372,6 +372,7 @@ function testkyber() {
 		plaintext[i] = nextInt(2);
 		plaintext_3841[i] = plaintext[i] * 3841;
 	}
+	console.log("here",plaintext)
 	ntt_a00 = NTT(a00, a00.length);
 	ntt_a01 = NTT(a01, a01.length);
 	ntt_a02 = NTT(a02, a02.length);

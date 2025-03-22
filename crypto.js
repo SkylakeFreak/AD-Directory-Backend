@@ -9,23 +9,6 @@ var bitRev_psiInv_7681_256 = [
 ];
 //=============================== compression and decompression ===============================
 
-function textToBinary(text) {
-    return text
-        .split('')
-        .map(char => char.charCodeAt(0).toString(2).padStart(8, '0')) // Convert each character to binary
-        .join(' ');
-}
-
-
-
-
-function binaryToTextNoSpaces(binary) {
-    return binary
-        .match(/.{1,8}/g) // Split binary string into 8-bit chunks
-        .map(bin => String.fromCharCode(parseInt(bin, 2)))
-        .join('');
-}
-
 
 function compress2d(modulus, q, v) {
 	if (modulus <= 0) {

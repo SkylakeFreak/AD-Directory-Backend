@@ -10,6 +10,7 @@
     "mongoose": "^8.9.6",
     "node-cron": "^3.0.3",
     "nodemon": "^3.1.9",
+    "pqcrypto": "^1.0.1",
     "socket.io": "^4.8.1"
   }
 }

@@ -103,7 +103,7 @@ function INTT(A, n) {
 //--------------------------------------------------------------------------------------
 //Returns the next pseudorandom, uniformly distributed integer between 0(inclusive) and q-1(inclusive)
 function nextInt(q) {
-	return Math.floor(random() * q);	//prng.js -> random()
+	return Math.floor(Math.random() * q);	//prng.js -> random()
 }
 
 //Returns the bit of integer decimal_a at the index
